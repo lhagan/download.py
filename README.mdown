@@ -1,0 +1,62 @@
+Threaded downloads from Python using libcurl.
+
+Features:
+=========
+
+* follows redirects
+* returns download progress (percent complete, amount downloaded, total file size)
+* automatically resumes download if file exists
+* cookies support
+
+Usage:
+======
+
+Functional sample code is included as part of the library; just run:
+
+    python download.py http://your/url
+
+for a simple demonstration. Take a look at the code or run without a URL to see options.
+
+To incorporate into your project, try something like this:
+
+    import download
+    
+    # set your url
+    url = "http://your/url"
+    
+    # set download path
+    download_path = "/path/to/destination/"
+    
+    # add some cookies
+    cookies = "name=value; name2=value2"
+    
+    # pretend to be Safari 5
+    useragent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_6; en-us) AppleWebKit/533.20.25 (KHTML, like Gecko) Version/5.0.4 Safari/533.20.27"
+    
+    # instantiate download
+    d = download.Download(url, download_path, cookies=cookies, useragent=useragent)
+    
+    # start download
+    d.start()
+    
+    # get status
+    print()
+    while 1:
+        try:
+            progress = d.progress['percent']
+            print("%.2f percent | %.2f of %.2f" % (progress, d.progress['downloaded'], d.progress['total']))
+            if progress == 100:
+                print("")
+                print("Download complete: %s" % d.filename)
+                break
+            time.sleep(1)
+            
+You can also cancel the download using:
+
+    d.cancel()
+    
+To resume, just re-create the download instance as above using the same target path, and libcurl will pick up where it left off.
+    
+    
+    
+    
