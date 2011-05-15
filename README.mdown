@@ -1,5 +1,3 @@
-Threaded downloads from Python using libcurl.
-
 Features:
 =========
 
